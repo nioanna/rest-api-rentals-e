@@ -38,7 +38,6 @@ class UserController extends Controller
             "name"          =>          $request->name,
             "email"              =>          $request->email,
             "password"           =>          md5($request->password),
-            "phone"              =>          $request->phone
         );
 
         $user_status            =           User::where("email", $request->email)->first();
