@@ -47,9 +47,10 @@ class UserController extends Controller
         }
 
         $user                   =           User::create($userDataArray);
+        $token = $user->createToken('auth_token')->plainTextToken;
 
         if (!is_null($user)) {
-            return response()->json(["status" => $this->status_code, "success" => true, "message" => "Registration completed successfully", "data" => $user]);
+            return response()->json(["status" => $this->status_code, "success" => true, "message" => "Registration completed successfully", 'access_token' => $token, "token_type" => 'Bearer']);
         } else {
             return response()->json(["status" => "failed", "success" => false, "message" => "failed to register"]);
         }
@@ -85,8 +86,9 @@ class UserController extends Controller
             // if password is correct
             if (!is_null($password_status)) {
                 $user           =       $this->userDetail($request->email);
+                $token = $user->createToken('auth_token')->plainTextToken;
 
-                return response()->json(["status" => $this->status_code, "success" => true, "message" => "You have logged in successfully", "data" => $user]);
+                return response()->json(["status" => $this->status_code, "success" => true, "message" => "You have logged in successfully", 'access_token' => $token]);
             } else {
                 return response()->json(["status" => "failed", "success" => false, "message" => "Unable to login. Incorrect password."]);
             }
